@@ -1,0 +1,19 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    external-dns.alpha.kubernetes.io/hostname: {{ .Values.pomerium_domain }}
+  name: public-authenticated-dns
+spec:
+  ingressClassName: public-authenticated
+  rules:
+    - host: {{ .Values.pomerium_domain }}
+      http:
+        paths:
+          - backend:
+              service:
+                name: pomerium-proxy
+                port:
+                  number: 443
+            path: /
+            pathType: Prefix

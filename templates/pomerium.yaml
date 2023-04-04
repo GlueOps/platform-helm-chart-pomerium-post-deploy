@@ -1,0 +1,19 @@
+apiVersion: ingress.pomerium.io/v1
+kind: Pomerium
+metadata:
+  name: global
+spec:
+  authenticate:
+    url: https://{{ .Values.pomerium_domain }}
+  certificates:
+    - glueops-core-cert-manager/{{ .Values.ingress_cert_name }}
+  identityProvider:
+    url: https://{{ .Values.dex_domain }}
+    provider: oidc
+    secret: pomerium/dex
+    scopes:
+      - openid
+      - email
+      - profile
+      - groups
+  secrets: pomerium/bootstrap
