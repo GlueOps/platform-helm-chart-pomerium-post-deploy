@@ -6,7 +6,7 @@ spec:
   authenticate:
     url: https://{{ .Values.pomerium_domain }}
   certificates:
-    - glueops-core-cert-manager/{{ .Values.ingress_cert_name }}}
+    - glueops-core-cert-manager/{{ .Values.ingress_cert_name }}
   identityProvider:
     url: https://{{ .Values.dex_domain }}
     provider: oidc
