@@ -36,10 +36,10 @@ spec:
     - host: {{ .Values.argocd_domain }}
       http:
         paths:
-        - pathtype: Prefix
-          path: /api/webhook
-          backend:
-            service:
-              name: argocd-server
+          - backend:
+              service:
+                name: argocd-server
                 port:
                   number: 80
+            path: /api/webhook
+            pathtype: Prefix
