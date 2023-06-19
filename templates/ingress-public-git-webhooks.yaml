@@ -1,10 +1,18 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: argocd-server-externalname-service
+spec:
+  type: ExternalName
+  externalName: http://argocd-server.{{ .Release.Namespace }}.svc.cluster.local
+---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   annotations:
     ingress.pomerium.io/policy: |
       - from: https://{{ .Values.argocd_domain }}
-        to: http://argocd-server.{{ .Release.Namespace }}.svc.cluster.local
+        to: http://argocd-server-externalname-service.{{ .Release.Namespace }}.svc.cluster.local
         path: /api/webhook
         allow:
           or:
@@ -38,7 +46,7 @@ spec:
         paths:
           - backend:
               service:
-                name: argocd-server.glueops-core.svc.cluster.local
+                name: argocd-server-externalname-service
                 port:
                   number: 80
             path: /api/webhook
