@@ -1,3 +1,4 @@
+argocd_domain: nil
 dex_domain: nil
 pomerium_domain: nil
 ingress_cert_name: nil

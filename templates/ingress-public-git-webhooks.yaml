@@ -1,0 +1,45 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    ingress.pomerium.io/policy: |
+      - from: https://{{ .Values.argocd_domain }}
+        to: http://argocd-server.{{ .Release.Namespace }}.svc.cluster.local
+        path: /api/webhook
+        allow:
+          or:
+            - domain:
+                is: github.com
+            - domain:
+                is: hooks.github.com
+        cors_preflight:
+          allow_credentials: true
+          allow_methods:
+            - GET
+            - POST
+            - PUT
+            - PATCH
+            - DELETE
+          allow_headers:
+            - Authorization
+            - Content-Type
+            - X-Hub-Signature-256
+          expose_headers:
+            - Content-Length
+          max_age: 600
+          allow_origins:
+            - https://github.com
+  name: public-git-webhooks
+spec:
+  ingressClassName: public-authenticated
+  rules:
+    - host: {{ .Values.argocd_domain }}
+      http:
+        paths:
+        - pathtype: Prefix
+          path: /api/webhook
+          backend:
+            service:
+              name: argocd-server
+                port:
+                  number: 80
