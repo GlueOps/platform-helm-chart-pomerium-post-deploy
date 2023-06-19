@@ -4,7 +4,7 @@ metadata:
   name: argocd-server-externalname-service
 spec:
   type: ExternalName
-  externalName: http://argocd-server.{{ .Release.Namespace }}.svc.cluster.local
+  externalName: argocd-server.{{ .Release.Namespace }}.svc.cluster.local
 ---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
