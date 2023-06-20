@@ -20,23 +20,23 @@ metadata:
                 is: github.com
             - domain:
                 is: hooks.github.com
-        cors_preflight:
-          allow_credentials: true
-          allow_methods:
-            - GET
-            - POST
-            - PUT
-            - PATCH
-            - DELETE
-          allow_headers:
-            - Authorization
-            - Content-Type
-            - X-Hub-Signature-256
-          expose_headers:
-            - Content-Length
-          max_age: 600
-          allow_origins:
-            - https://github.com
+        # cors_preflight:
+        #   allow_credentials: true
+        #   allow_methods:
+        #     - GET
+        #     - POST
+        #     - PUT
+        #     - PATCH
+        #     - DELETE
+        #   allow_headers:
+        #     - Authorization
+        #     - Content-Type
+        #     - X-Hub-Signature-256
+        #   expose_headers:
+        #     - Content-Length
+        #   max_age: 600
+        #   allow_origins:
+        #     - https://github.com
   name: public-git-webhooks
 spec:
   ingressClassName: public-authenticated
