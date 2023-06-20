@@ -37,7 +37,7 @@ spec:
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: {{ .Release.Name }}
+  name: nginx-argocd-events
   annotations:
     cert-manager.io/cluster-issuer: letsencrypt
 spec:
