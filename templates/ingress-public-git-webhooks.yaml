@@ -10,16 +10,16 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   annotations:
-    ingress.pomerium.io/policy: |
-      - from: https://{{ .Values.argocd_domain }}
-        to: http://argocd-server-externalname-service.{{ .Release.Namespace }}.svc.cluster.local
-        path: /api/webhook
-        allow:
-          or:
-            - domain:
-                is: github.com
-            - domain:
-                is: hooks.github.com
+    # ingress.pomerium.io/policy: |
+    #   - from: https://{{ .Values.argocd_domain }}
+    #     to: http://argocd-server-externalname-service.{{ .Release.Namespace }}.svc.cluster.local
+    #     path: /api/webhook
+    #     allow:
+    #       or:
+    #         - domain:
+    #             is: github.com
+    #         - domain:
+    #             is: hooks.github.com
         # cors_preflight:
         #   allow_credentials: true
         #   allow_methods:
