@@ -6,28 +6,51 @@ spec:
   type: ExternalName
   externalName: argocd-server.{{ .Release.Namespace }}.svc.cluster.local
 ---
+# pomerium
+# apiVersion: networking.k8s.io/v1
+# kind: Ingress
+# metadata:
+#   annotations:
+#     # ingress.pomerium.io/policy: |
+#     #   allow:
+#     #     or:
+#     #       - domain:
+#     #           is: github.com
+#     #       - domain:
+#     #           is: hooks.github.com
+#   name: public-git-webhooks
+# spec:
+#   ingressClassName: public-authenticated
+#   rules:
+#     - host: {{ .Values.argocd_domain }}
+#       http:
+#         paths:
+#           - backend:
+#               service:
+#                 name: argocd-server-externalname-service
+#                 port:
+#                   number: 80
+#             path: /api/webhook
+#             pathType: Prefix
+
+# nginx
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
+  name: {{ .Release.Name }}
   annotations:
-    # ingress.pomerium.io/policy: |
-    #   allow:
-    #     or:
-    #       - domain:
-    #           is: github.com
-    #       - domain:
-    #           is: hooks.github.com
-  name: public-git-webhooks
+    cert-manager.io/cluster-issuer: letsencrypt
 spec:
-  ingressClassName: public-authenticated
+  ingressClassName: public
+
   rules:
-    - host: {{ .Values.argocd_domain }}
-      http:
-        paths:
-          - backend:
-              service:
-                name: argocd-server-externalname-service
-                port:
-                  number: 80
-            path: /api/webhook
-            pathType: Prefix
+  - host: argocd.{{ .Values.captain_domain }}
+    http:
+      paths:
+        - backend:
+            service:
+              name: {{ .Release.Name }}
+              port:
+                number: 80
+          path: /api/webhook
+          pathType: Prefix
