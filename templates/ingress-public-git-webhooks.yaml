@@ -46,7 +46,7 @@ spec:
   ingressClassName: public
 
   rules:
-  - host: {{ .Values.argocd_domain }}
+  - host: api.{{ .Values.argocd_domain }}
     http:
       paths:
         - backend:
