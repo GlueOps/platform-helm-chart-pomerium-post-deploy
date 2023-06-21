@@ -6,56 +6,56 @@ spec:
   type: ExternalName
   externalName: argocd-server.{{ .Release.Namespace }}.svc.cluster.local
 ---
-# pomerium
-# apiVersion: networking.k8s.io/v1
-# kind: Ingress
-# metadata:
-#   annotations:
-#     # ingress.pomerium.io/policy: |
-#     #   allow:
-#     #     or:
-#     #       - domain:
-#     #           is: github.com
-#     #       - domain:
-#     #           is: hooks.github.com
-#   name: public-git-webhooks
-# spec:
-#   ingressClassName: public-authenticated
-#   rules:
-#     - host: {{ .Values.argocd_domain }}
-#       http:
-#         paths:
-#           - backend:
-#               service:
-#                 name: argocd-server-externalname-service
-#                 port:
-#                   number: 80
-#             path: /api/webhook
-#             pathType: Prefix
-
-# nginx
+pomerium
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: nginx-argocd-events
   annotations:
-    cert-manager.io/cluster-issuer: letsencrypt
-    kubernetes.io/tls-acme: "true"
-    nginx.ingress.kubernetes.io/ssl-passthrough: "true"
+    # ingress.pomerium.io/policy: |
+    #   allow:
+    #     or:
+    #       - domain:
+    #           is: github.com
+    #       - domain:
+    #           is: hooks.github.com
+  name: public-git-webhooks
 spec:
-  ingressClassName: public
-
+  ingressClassName: public-authenticated
   rules:
-  - host: {{ .Values.argocd_domain }}
-    http:
-      paths:
-        - backend:
-            service:
-              name: argocd-server-externalname-service
-              port:
-                name: https
-          path: /api
-          pathType: Prefix
-    tls:
-    - hosts:
-      - {{ .Values.argocd_domain }}
+    - host: {{ .Values.argocd_domain }}
+      http:
+        paths:
+          - backend:
+              service:
+                name: argocd-server-externalname-service
+                port:
+                  number: 80
+            path: /api/webhook
+            pathType: Prefix
+
+# nginx
+# apiVersion: networking.k8s.io/v1
+# kind: Ingress
+# metadata:
+#   name: nginx-argocd-events
+#   annotations:
+#     cert-manager.io/cluster-issuer: letsencrypt
+#     kubernetes.io/tls-acme: "true"
+#     nginx.ingress.kubernetes.io/ssl-passthrough: "true"
+# spec:
+#   ingressClassName: public
+
+#   rules:
+#   - host: {{ .Values.argocd_domain }}
+#     http:
+#       paths:
+#         - backend:
+#             service:
+#               name: argocd-server-externalname-service
+#               port:
+#                 name: https
+#           path: /api
+#           pathType: Prefix
+#     tls:
+#     - hosts:
+#       - {{ .Values.argocd_domain }}
