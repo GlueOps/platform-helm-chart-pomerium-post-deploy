@@ -4,20 +4,22 @@ metadata:
   name: argocd-server-externalname-service
 spec:
   type: ExternalName
-  externalName: argocd-server.{{ .Release.Namespace }}.svc.cluster.local
+  externalName: argocd-server.glueops-core.svc.cluster.local
 ---
 #pomerium
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   annotations:
-    # ingress.pomerium.io/policy: |
-    #   allow:
-    #     or:
-    #       - domain:
-    #           is: github.com
-    #       - domain:
-    #           is: hooks.github.com
+    ingress.pomerium.io/policy: |
+      - from: https://{{ .Values.argocd_domain }}/api/webhook
+        to: http://argocd-server-externalname-service.glueops-core.svc.cluster.local
+        allow:
+          or:
+            - domain:
+                is: github.com
+            - domain:
+                is: hooks.github.com
   name: public-git-webhooks
 spec:
   ingressClassName: public-authenticated
