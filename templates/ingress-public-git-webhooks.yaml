@@ -46,7 +46,7 @@ spec:
   ingressClassName: public
 
   rules:
-  - host: api.{{ .Values.argocd_domain }}
+  - host: {{ .Values.argocd_domain }}
     http:
       paths:
         - backend:
@@ -54,7 +54,7 @@ spec:
               name: argocd-server-externalname-service
               port:
                 name: https
-          path: /
+          path: /api
           pathType: Prefix
     tls:
     - hosts:
