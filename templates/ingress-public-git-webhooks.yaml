@@ -40,6 +40,8 @@ metadata:
   name: nginx-argocd-events
   annotations:
     cert-manager.io/cluster-issuer: letsencrypt
+    kubernetes.io/tls-acme: "true"
+    nginx.ingress.kubernetes.io/ssl-passthrough: "true"
 spec:
   ingressClassName: public
 
@@ -49,8 +51,11 @@ spec:
       paths:
         - backend:
             service:
-              name: {{ .Release.Name }}
+              name: argocd-server-externalname-service
               port:
-                number: 80
-          path: /api/webhook
+                name: https
+          path: /
           pathType: Prefix
+    tls:
+    - hosts:
+      - {{ .Values.argocd_domain }}
