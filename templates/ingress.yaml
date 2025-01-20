@@ -3,6 +3,7 @@ kind: Ingress
 metadata:
   annotations:
     external-dns.alpha.kubernetes.io/hostname: {{ .Values.pomerium_domain }}
+    external-dns.alpha.kubernetes.io/target: 159.69.100.65
   name: public-authenticated-dns
 spec:
   ingressClassName: public-authenticated
