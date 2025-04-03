@@ -3,6 +3,7 @@ kind: Pomerium
 metadata:
   name: global
 spec:
+  useProxyProtocol: {{ .Values.enable_proxy_protocol }}
   authenticate:
     url: https://{{ .Values.pomerium_domain }}
   certificates:
