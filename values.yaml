@@ -3,3 +3,4 @@ pomerium_domain: nil
 ingress_cert_name: nil
 client_id: nil
 client_secret: nil
+enable_proxy_protocol: false
